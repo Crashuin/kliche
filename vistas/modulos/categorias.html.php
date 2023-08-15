@@ -4,7 +4,7 @@
     
     <h1>
       
-      Administrar categorias
+      Administrar categorías
     
     </h1>
 
@@ -12,7 +12,7 @@
       
       <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
       
-      <li class="active">Administrar categorias</li>
+      <li class="active">Administrar categorías</li>
     
     </ol>
 
@@ -26,7 +26,7 @@
   
         <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarCategoria">
           
-          Agregar categoria
+          Agregar categoría
 
         </button>
 
@@ -51,9 +51,10 @@
         <tbody>
           
           <tr>
-            <td>1</td> 
 
-            <td>Productos</td>
+            <td>1</td>
+
+            <td>EQUIPOS ELECTROMECÁNICOS</td>
 
             <td>
 
@@ -69,12 +70,32 @@
 
           </tr>
 
-           <tr>
+          <tr>
 
             <td>1</td>
 
-            <td>Serviciod</td>
+            <td>EQUIPOS ELECTROMECÁNICOS</td>
+            
+            <td>
 
+              <div class="btn-group">
+                  
+                <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
+
+                <button class="btn btn-danger"><i class="fa fa-times"></i></button>
+
+              </div>  
+
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td>1</td>
+
+            <td>EQUIPOS ELECTROMECÁNICOS</td>
+            
             <td>
 
               <div class="btn-group">
@@ -121,7 +142,7 @@ MODAL AGREGAR USUARIO
 
           <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-          <h4 class="modal-title">Agregar categoria</h4>
+          <h4 class="modal-title">Agregar categoría</h4>
 
         </div>
 
@@ -141,13 +162,13 @@ MODAL AGREGAR USUARIO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <input type="text" class="form-control input-lg" name="nuevaCategoria" placeholder="Ingresar categoria" required>
+                <input type="text" class="form-control input-lg" name="nuevaCategoria" placeholder="Ingresar categoría" required>
 
               </div>
 
             </div>
-
-           </div>
+  
+          </div>
 
         </div>
 
@@ -159,7 +180,7 @@ MODAL AGREGAR USUARIO
 
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
 
-          <button type="submit" class="btn btn-primary">Guardar categoria</button>
+          <button type="submit" class="btn btn-primary">Guardar categoría</button>
 
         </div>
 

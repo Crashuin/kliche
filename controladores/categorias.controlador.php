@@ -2,167 +2,180 @@
 
 class ControladorCategorias{
 
-/*=====================================
-CREAR CATEGORIA
-======================================*/
+	/*=============================================
+	CREAR CATEGORIAS
+	=============================================*/
 
-static public function ctrCrearCategoria(){
+	static public function ctrCrearCategoria(){
 
-	if (isset($_POST["nuevaCategoria"])){
+		if(isset($_POST["nuevaCategoria"])){
 
-		if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST['nuevaCategoria'])) {
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaCategoria"])){
 
-			$tabla = "categorias";
+				$tabla = "categorias";
 
-			$datos = $_POST["nuevaCategoria"];
+				$datos = $_POST["nuevaCategoria"];
 
-			$respuesta = ModeloCategorias::mdlIngresarCategoria($tabla, $datos);
+				$respuesta = ModeloCategorias::mdlIngresarCategoria($tabla, $datos);
 
-			if($respuesta == "ok"){
+				if($respuesta == "ok"){
 
-				echo'<script>
-				swal({
-					type: "success",
-					title: "La categoria ha sido guardada correctamente",
-					showConfirmButton: true,
-					confirmButtonText: "Cerrar",
-					closeOnConfirm: false
-					}).then((result)=>{
-						if (result.value){
+					echo'<script>
 
-							window.location = "categorias";
-						}
-						})
-						</script>';
-			}
+					swal({
+						  type: "success",
+						  title: "La categoría ha sido guardada correctamente",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+
+									window.location = "categorias";
+
+									}
+								})
+
+					</script>';
+
+				}
+
+
 			}else{
 
 				echo'<script>
-				swal({
-					type: "error",
-					title: "La categoria no puede estar vacia o llevar caracteres especiales",
-					showConfirmButton: true,
-					confirmButtonText: "Cerrar",
-					closeOnConfirm: false
-					}).then((result)=>{
-						if (result.value){
+
+					swal({
+						  type: "error",
+						  title: "¡La categoría no puede ir vacía o llevar caracteres especiales!",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+							if (result.value) {
 
 							window.location = "categorias";
-						}
+
+							}
 						})
-						</script>';
+
+			  	</script>';
+
 			}
 
-
-
 		}
+
 	}
 
-	/*=====================================
-	MOSTRAR CATEGORIA
-	======================================*/
+	/*=============================================
+	MOSTRAR CATEGORIAS
+	=============================================*/
 
 	static public function ctrMostrarCategorias($item, $valor){
 
 		$tabla = "categorias";
 
-		$respuesta = ModeloCategorias::MdlMostrarCategorias($tabla, $item, $valor);
+		$respuesta = ModeloCategorias::mdlMostrarCategorias($tabla, $item, $valor);
 
 		return $respuesta;
+	
 	}
 
-	/*=====================================
+	/*=============================================
 	EDITAR CATEGORIA
-	======================================*/
+	=============================================*/
 
-static public function ctrEditarCategoria(){	
+	static public function ctrEditarCategoria(){
 
-	if (isset($_POST["editarCategoria"])){
+		if(isset($_POST["editarCategoria"])){
 
-		if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST['editarCategoria'])) {
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarCategoria"])){
 
-			$tabla = "categorias";
+				$tabla = "categorias";
 
-			$datos = array("categoria"=>$_POST["editarCategoria"],
-							"id"=>$_POST["idCategoria"]);
+				$datos = array("categoria"=>$_POST["editarCategoria"],
+							   "id"=>$_POST["idCategoria"]);
 
-			$respuesta = ModeloCategorias::mdlEditarCategoria($tabla, $datos);
+				$respuesta = ModeloCategorias::mdlEditarCategoria($tabla, $datos);
 
-			if($respuesta == "ok"){
+				if($respuesta == "ok"){
 
-				echo'<script>
-				swal({
-					type: "success",
-					title: "La categoria ha sido cambiada correctamente",
-					showConfirmButton: true,
-					confirmButtonText: "Cerrar",
-					closeOnConfirm: false
-					}).then((result)=>{
-						if (result.value){
+					echo'<script>
 
-							window.location = "categorias";
-						}
-						})
-						</script>';
-			}
+					swal({
+						  type: "success",
+						  title: "La categoría ha sido cambiada correctamente",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+
+									window.location = "categorias";
+
+									}
+								})
+
+					</script>';
+
+				}
+
+
 			}else{
 
 				echo'<script>
-				swal({
-					type: "error",
-					title: "La categoria no puede estar vacia o llevar caracteres especiales",
-					showConfirmButton: true,
-					confirmButtonText: "Cerrar",
-					closeOnConfirm: false
-					}).then((result)=>{
-						if (result.value){
+
+					swal({
+						  type: "error",
+						  title: "¡La categoría no puede ir vacía o llevar caracteres especiales!",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+							if (result.value) {
 
 							window.location = "categorias";
-						}
+
+							}
 						})
-						</script>';
+
+			  	</script>';
+
 			}
 
-
-
 		}
+
 	}
-	/*=====================================
+
+	/*=============================================
 	BORRAR CATEGORIA
-	======================================*/
+	=============================================*/
 
 	static public function ctrBorrarCategoria(){
 
 		if(isset($_GET["idCategoria"])){
 
-			$tabla = "Categorias";
+			$tabla ="Categorias";
 			$datos = $_GET["idCategoria"];
 
 			$respuesta = ModeloCategorias::mdlBorrarCategoria($tabla, $datos);
 
-			if ($respuesta == "ok"){
+			if($respuesta == "ok"){
 
 				echo'<script>
 
-				swal({
+					swal({
+						  type: "success",
+						  title: "La categoría ha sido borrada correctamente",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
 
-					type: "success",
-					title: "La categoria ha sido borrada correctamente",
-					showConfirmButton: true,
-					confirmButtonText: "Cerrar",
-					closeOnConfirm: false
-					}).then((result) => {
+									window.location = "categorias";
 
-						if (result.value){
+									}
+								})
 
-							window.location = "categorias";
-						}
-
-			})
-
-			</script>'; 
-
+					</script>';
+			}
 		}
+		
 	}
-}
 }
