@@ -30,7 +30,7 @@
 
           <i class="fa fa-warning text-primary"></i> 
 
-          Ooops! Página no encontrada.
+          Página no encontrada!
 
         </h3>
 

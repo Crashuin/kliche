@@ -28,7 +28,7 @@
       
       <div class="col-lg-5 col-xs-12">
         
-        <div class="box box-danger">
+        <div class="box box-success">
           
           <div class="box-header with-border"></div>
 
@@ -37,6 +37,28 @@
             <div class="box-body">
   
               <div class="box">
+
+                <?php
+
+                    $item = "id";
+                    $valor = $_GET["idVenta"]; //Para controlar la edicion de una venta traves de su id en tabla ventas
+
+                    $venta = ControladorVentas::ctrMostrarVentas($item, $valor); //llama a la venta
+
+                    $itemUsuario = "id";
+                    $valorUsuario = $venta["id_vendedor"]; //trae el nombre del vendedor segun sea el id
+
+                    $vendedor = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
+
+                    $itemCliente = "id";
+                    $valorCliente = $venta["id_cliente"]; //trae el id cliente para la venta
+
+                    $cliente = ControladorClientes::ctrMostrarClientes($itemCliente, $valorCliente); //Para recuperar el porcentaje anterior
+
+                    $porcentajeImpuesto = $venta["impuesto"] * 100 / $venta["neto"]; //Formula del porcentaje
+
+
+                ?>
 
                 <!--=====================================
                 ENTRADA DEL VENDEDOR
@@ -48,9 +70,9 @@
                     
                     <span class="input-group-addon"><i class="fa fa-user"></i></span> 
 
-                    <input type="text" class="form-control" id="nuevoVendedor" value="<?php echo $_SESSION["nombre"]; ?>" readonly>
+                    <input type="text" class="form-control" id="nuevoVendedor" value="<?php echo $vendedor["nombre"]; ?>" readonly>
 
-                    <input type="hidden" name="idVendedor" value="<?php echo $_SESSION["id"]; ?>">
+                    <input type="hidden" name="idVendedor" value="<?php echo $vendedor["id"]; ?>">
 
                   </div>
 
@@ -66,38 +88,8 @@
                     
                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
 
-                    <?php
-
-                    $item = null;
-                    $valor = null;
-
-                    $ventas = ControladorVentas::ctrMostrarVentas($item, $valor);
-
-                    if(!$ventas){
-
-                      echo '<input type="text" class="form-control" id="nuevaVenta" name="nuevaVenta" value="10001" readonly>';
-                  
-
-                    }else{
-
-                      foreach ($ventas as $key => $value) {
-                        //Por fuera del foreeach se obtiene el ultimo codigo del listado
-                        
-                      
-                      }
-
-                      $codigo = $value["codigo"] + 1;
-
-
-
-                      echo '<input type="text" class="form-control" id="nuevaVenta" name="nuevaVenta" value="'.$codigo.'" readonly>';
-                  
-
-                    }
-
-                    ?>
-                    
-                    
+                   <input type="text" class="form-control" id="nuevaVenta" name="editarVenta" value="<?php echo $venta["codigo"]; ?>" readonly>
+               
                   </div>
                 
                 </div>
@@ -114,7 +106,7 @@
                     
                     <select class="form-control" id="seleccionarCliente" name="seleccionarCliente" required>
 
-                    <option value="">Seleccionar cliente</option>
+                    <option value="<?php echo $cliente["id"]; ?>"><?php echo $cliente["nombre"]; ?></option> <!--imprime el nomber del cliente seleccionado-->
 
                     <?php
 
@@ -143,11 +135,60 @@
                 ENTRADA PARA AGREGAR PRODUCTO
                 ======================================--> 
 
-                <div class="form-group row nuevoProducto">
+                <div class="form-group row nuevoProducto"> 
+
+                <?php
+
+                $listaProducto = json_decode($venta["productos"], true); //trae los productos de la venta seleccionada
+
+                foreach ($listaProducto as $key => $value) {
+
+                  $item = "id";
+                  $valor = $value["id"]; //Para solicitar el id de cada producto 
+
+                  $respuesta = ControladorProductos::ctrMostrarProductos($item, $valor);
+
+                  $stockAntiguo = $respuesta["stock"] + $value["cantidad"]; //para sumar el stock de antes
+                  
+                  echo '<div class="row" style="padding:5px 15px">
+            
+                        <div class="col-xs-6" style="padding-right:0px">
+            
+                          <div class="input-group">
+                
+                            <span class="input-group-addon"><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto="'.$value["id"].'"><i class="fa fa-times"></i></button></span>
+
+                            <input type="text" class="form-control nuevaDescripcionProducto" idProducto="'.$value["id"].'" name="agregarProducto" value="'.$value["descripcion"].'" readonly required>
+
+                          </div>
+
+                        </div>
+
+                        <div class="col-xs-3">
+              
+                          <input type="number" class="form-control nuevaCantidadProducto" name="nuevaCantidadProducto" min="1" value="'.$value["cantidad"].'" stock="'.$stockAntiguo.'" nuevoStock="'.$value["stock"].'" required>
+
+                        </div>
+
+                        <div class="col-xs-3 ingresoPrecio" style="padding-left:0px">
+
+                          <div class="input-group">
+
+                            <span class="input-group-addon"><i class="ion ion-social-usd"></i></span>
+                   
+                            <input type="text" class="form-control nuevoPrecioProducto" precioReal="'.$respuesta["precio_venta"].'" name="nuevoPrecioProducto" value="'.$value["total"].'" readonly required>
+   
+                          </div>
+               
+                        </div>
+
+                      </div>';
+                }
 
 
-            </div>
+                ?>
 
+                </div>
 
                 <input type="hidden" id="listaProductos" name="listaProductos">
 
@@ -186,11 +227,11 @@
                             
                             <div class="input-group">
                            
-                              <input type="number" class="form-control input-lg" min="0" id="nuevoImpuestoVenta" name="nuevoImpuestoVenta" placeholder="0" required>
+                              <input type="number" class="form-control input-lg" min="0" id="nuevoImpuestoVenta" name="nuevoImpuestoVenta" value="<?php echo $porcentajeImpuesto; ?>" required>
 
-                               <input type="hidden" name="nuevoPrecioImpuesto" id="nuevoPrecioImpuesto" required>
+                               <input type="hidden" name="nuevoPrecioImpuesto" id="nuevoPrecioImpuesto" value="<?php echo $venta["impuesto"]; ?>" required>
 
-                               <input type="hidden" name="nuevoPrecioNeto" id="nuevoPrecioNeto" required>
+                               <input type="hidden" name="nuevoPrecioNeto" id="nuevoPrecioNeto" value="<?php echo $venta["neto"]; ?>" required> <!--Se agerga el valor neto para evitar que al editar el impuesto % se ponga cero  y solo al modificar el impuesto-->
 
                               <span class="input-group-addon"><i class="fa fa-percent"></i></span>
                         
@@ -204,9 +245,9 @@
                            
                               <span class="input-group-addon"><i class="ion ion-social-usd"></i></span>
 
-                              <input type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="00000" readonly required>
+                              <input type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="<?php echo $venta["neto"]; ?>" value="<?php echo $venta["total"]; ?>" readonly required>
 
-                              <input type="hidden" name="totalVenta" id="totalVenta">
+                              <input type="hidden" name="totalVenta" value="<?php echo $venta["total"]; ?>" id="totalVenta">
                               
                         
                             </div>
@@ -245,12 +286,12 @@
                     </div>
 
                   </div>
-                       
+
                   <div class="cajasMetodoPago"></div>
 
                   <input type="hidden" id="listaMetodoPago" name="listaMetodoPago">
 
-                  </div>
+                </div>
 
                 <br>
       
@@ -260,7 +301,7 @@
 
           <div class="box-footer">
 
-            <button type="submit" class="btn btn-primary pull-right">Guardar venta</button>
+            <button type="submit" class="btn btn-primary pull-right">Guardar cambios</button>
 
           </div>
 
@@ -268,8 +309,8 @@
 
         <?php
 
-          $guardarVenta = new ControladorVentas(); //objeto para guardar venta
-          $guardarVenta -> ctrCrearVenta();
+          $editarVenta = new ControladorVentas(); //ejecuta el metodo y el objeto que se llama en el codigo
+          $editarVenta -> ctrEditarVenta();
           
         ?>
 
@@ -289,7 +330,7 @@
 
           <div class="box-body">
             
-            <table class="table table-bordered  table-striped tablaVentas"> <!--dt-responsive -->
+            <table class="table table-bordered table-striped dt-responsive tablaVentas">
               
                <thead>
 
@@ -304,12 +345,13 @@
 
               </thead>
 
-
             </table>
 
           </div>
 
         </div>
+
+
       </div>
 
     </div>
