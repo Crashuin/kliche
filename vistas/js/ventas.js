@@ -754,3 +754,15 @@ $(".tablas").on("click", ".btnEliminarVenta", function(){ //al dar click
   })
 
 })
+
+/*=============================================
+IMPRIMIR FACTURA
+=============================================*/
+
+// $(".tablas").on("click", ".btnImprimirFactura", function(){
+
+// 	var codigoVenta = $(this).attr("codigoVenta"); //traer e codigo de la venta a imprimir
+// 	//Nueva ventana con la extension del pdf y busca el archivo
+// 	window.open("extensiones/tcpdf/pdf/pdf.php", "_blank"); //pagina nueva
+
+// })
