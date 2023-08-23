@@ -33,6 +33,15 @@
           </button>
 
         </a>
+        <button type="button" class="btn btn-default pull-right" id="daterange-btn">
+           
+           <span>
+             <i class="fa fa-calendar"></i> Rango de fecha
+           </span>
+
+           <i class="fa fa-caret-down"></i>
+
+        </button>
 
       </div>
 
@@ -60,62 +69,78 @@
 
         <tbody>
 
-        <?php
+    <?php
 
-          $item = null;
-          $valor = null;
+      if(isset($_GET["fechaInicial"])){
 
-          $respuesta = ControladorVentas::ctrMostrarVentas($item, $valor); //asegura la visualizacion de la lista
-          //var_dump($respuesta);
-          foreach ($respuesta as $key => $value) { //para cada id
-           
+        $fechaInicial = $_GET["fechaInicial"];
+        $fechaFinal = $_GET["fechaFinal"];
 
-           echo '<tr>
+      }else{
 
-                  <td>'.($key+1).'</td>
+        $fechaInicial = null;
+        $fechaFinal = null;
 
-                  <td>'.$value["codigo"].'</td>';
+      }
 
-                  $itemCliente = "id";
-                  $valorCliente = $value["id_cliente"]; //peticion del nombre de la tabla con el id
+      $respuesta = ControladorVentas::ctrRangoFechasVentas($fechaInicial, $fechaFinal);
 
-                  $respuestaCliente = ControladorClientes::ctrMostrarClientes($itemCliente, $valorCliente);
+      foreach ($respuesta as $key => $value) {
+      
+      echo '<tr>
 
-                  echo '<td>'.$respuestaCliente["nombre"].'</td>';
+              <td>'.($key+1).'</td>
 
-                  $itemUsuario = "id";
-                  $valorUsuario = $value["id_vendedor"];
+              <td>'.$value["codigo"].'</td>';
 
-                  $respuestaUsuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario); //sacar en echo lo que haya sacado de respéusta
+              $itemCliente = "id";
+              $valorCliente = $value["id_cliente"];
 
-                  echo '<td>'.$respuestaUsuario["nombre"].'</td> 
+              $respuestaCliente = ControladorClientes::ctrMostrarClientes($itemCliente, $valorCliente);
 
-                  <td>'.$value["metodo_pago"].'</td>
+              echo '<td>'.$respuestaCliente["nombre"].'</td>';
 
-                  <td>$ '.number_format($value["neto"],2).'</td>
+              $itemUsuario = "id";
+              $valorUsuario = $value["id_vendedor"];
 
-                  <td>$ '.number_format($value["total"],2).'</td>
+              $respuestaUsuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
 
-                  <td>'.$value["fecha"].'</td>
+              echo '<td>'.$respuestaUsuario["nombre"].'</td>
 
-                  <td>
+              <td>'.$value["metodo_pago"].'</td>
 
-                    <div class="btn-group">
-                        
-                      <button class="btn btn-info"><i class="fa fa-print"></i></button>
+              <td>$ '.number_format($value["neto"],2).'</td>
 
-                     <button class="btn btn-warning btnEditarVenta" idVenta="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
+              <td>$ '.number_format($value["total"],2).'</td>
 
-                      <button class="btn btn-danger btnEliminarVenta" idVenta="'.$value["id"].'"><i class="fa fa-times"></i></button>
+              <td>'.$value["fecha"].'</td>
 
-                    </div>  
+              <td>
 
-                  </td>
+                <div class="btn-group">
+                    
+                  <button class="btn btn-info btnImprimirFactura" codigoVenta="'.$value["codigo"].'">
 
-                </tr>';
-            }
+                    <i class="fa fa-print"></i>
 
-        ?>
+                  </button>';
+
+                  if($_SESSION["perfil"] == "Administrador"){
+
+                  echo '<button class="btn btn-warning btnEditarVenta" idVenta="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
+
+                  <button class="btn btn-danger btnEliminarVenta" idVenta="'.$value["id"].'"><i class="fa fa-times"></i></button>';
+
+                }
+
+                echo '</div>  
+
+              </td>
+
+            </tr>';
+        }
+
+    ?>
                
         </tbody>
 

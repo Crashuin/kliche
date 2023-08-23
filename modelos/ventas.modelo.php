@@ -126,4 +126,59 @@ class ModeloVentas{
 
 	}
 
+
+/*=============================================
+	RANGO FECHAS
+	=============================================*/	
+
+	static public function mdlRangoFechasVentas($tabla, $fechaInicial, $fechaFinal){
+
+		if($fechaInicial == null){
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY id ASC"); //devuelve todo lo que tenga con fechas si es nulo
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();	
+
+
+		}else if($fechaInicial == $fechaFinal){ //fecha de hoy
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha like '%$fechaFinal%'");//coincidencia con fecha final
+
+			$stmt -> bindParam(":fecha", $fechaFinal, PDO::PARAM_STR);
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}else{ //diferentes? se busaca el rango entre fechas
+
+			$fechaActual = new DateTime();
+			$fechaActual ->add(new DateInterval("P1D")); //adsicionas un dia amas
+			$fechaActualMasUno = $fechaActual->format("Y-m-d"); //captura en formato
+
+			$fechaFinal2 = new DateTime($fechaFinal);
+			$fechaFinal2 ->add(new DateInterval("P1D"));
+			$fechaFinalMasUno = $fechaFinal2->format("Y-m-d");
+
+			if($fechaFinalMasUno == $fechaActualMasUno){
+
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinalMasUno'");
+
+			}else{
+
+
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinal'");
+
+			}
+		
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}
+
+	}
+
 }
