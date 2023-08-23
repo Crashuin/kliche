@@ -1,4 +1,18 @@
 /*=============================================
+VARIABLE LOCAL STORAGE
+=============================================*/
+
+if(localStorage.getItem("capturarRango") != null){
+
+	$("#daterange-btn span").html(localStorage.getItem("capturarRango"));
+
+} else {
+
+	$("#daterange-btn span").html('<i class="fa fa-calendar"></i> Rango de fecha)')
+
+}
+
+/*=============================================
 CARGAR LA TABLA DINÁMICA DE VENTAS
 =============================================*/
 
@@ -12,6 +26,8 @@ CARGAR LA TABLA DINÁMICA DE VENTAS
 // 	}
 
 // })
+
+
 
 $('.tablaVentas').DataTable( {
     "ajax": "ajax/datatable-ventas.ajax.php",
@@ -732,7 +748,7 @@ $('.tablaVentas').on( 'draw.dt', function(){
 /*=============================================
 BORRAR VENTA
 =============================================*/
-$(".tablas").on("click", ".btnEliminarVenta", function(){ //al dar click
+$(".tablas").on("click", ".btnEliminarVenta", function(){	//al dar click
 
   var idVenta = $(this).attr("idVenta"); //con el id de la venta para activar el swal de eliminar
 
@@ -759,10 +775,102 @@ $(".tablas").on("click", ".btnEliminarVenta", function(){ //al dar click
 IMPRIMIR FACTURA
 =============================================*/
 
-// $(".tablas").on("click", ".btnImprimirFactura", function(){
+$(".tablas").on("click", ".btnImprimirFactura", function(){
 
-// 	var codigoVenta = $(this).attr("codigoVenta"); //traer e codigo de la venta a imprimir
-// 	//Nueva ventana con la extension del pdf y busca el archivo
-// 	window.open("extensiones/tcpdf/pdf/pdf.php", "_blank"); //pagina nueva
+	var codigoVenta = $(this).attr("codigoVenta"); //atributo para traer el codigo
+	//nueva vanetana con la ruta del archivo pdf
+	window.open("extensiones/tcpdf/pdf/factura.php?codigo="+codigoVenta, "_blank"); 
 
-// })
+})
+
+/*=============================================
+RANGO DE FECHAS
+=============================================*/
+
+$('#daterange-btn').daterangepicker(
+	{
+	  ranges   : {
+		'Hoy'       : [moment(), moment()],
+		'Ayer'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		'Últimos 7 días' : [moment().subtract(6, 'days'), moment()],
+		'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+		'Este mes'  : [moment().startOf('month'), moment().endOf('month')],
+		'Último mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	  },
+	  startDate: moment(),
+	  endDate  : moment()
+	},
+	function (start, end) {
+	  $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+  
+	  var fechaInicial = start.format('YYYY-MM-DD'); //funcionoes para tomar rango de fechas
+  
+	  var fechaFinal = end.format('YYYY-MM-DD');
+  
+	  var capturarRango = $("#daterange-btn span").html(); //boton del rango
+	 
+		 localStorage.setItem("capturarRango", capturarRango);
+  
+		 window.location = "index.php?ruta=ventas&fechaInicial="+fechaInicial+"&fechaFinal="+fechaFinal;  //captura los datos de la fecha
+  
+	}
+  
+  )
+
+
+  /*=============================================
+CANCELAR RANGO DE FECHAS
+=============================================*/
+
+$(".daterangepicker.opensleft .range_inputs .cancelBtn").on("click", function(){
+
+	localStorage.removeItem("capturarRango");
+	localStorage.clear();
+	window.location = "ventas";
+})
+
+/*=============================================
+CAPTURAR HOY
+=============================================*/
+
+$(".daterangepicker.opensleft .ranges li").on("click", function(){ //captura el li para saber si es seleccionado el item de hoy
+
+	var textoHoy = $(this).attr("data-range-key");
+
+	if(textoHoy == "Hoy"){
+
+		var d = new Date(); //ontiene la fecha de "hoy"
+		
+		var dia = d.getDate();
+		var mes = d.getMonth()+1;
+		var año = d.getFullYear();
+
+		if(mes < 10){ //url con el formato de la fecha hoy
+
+			var fechaInicial = año+"-0"+mes+"-"+dia; //ajustes para la fecha inicial tome formato
+			var fechaFinal = año+"-0"+mes+"-"+dia;
+
+		}else if(dia < 10){
+
+			var fechaInicial = año+"-"+mes+"-0"+dia;
+			var fechaFinal = año+"-"+mes+"-0"+dia;
+
+		}else if(mes < 10 && dia < 10){
+
+			var fechaInicial = año+"-0"+mes+"-0"+dia;
+			var fechaFinal = año+"-0"+mes+"-0"+dia;
+
+		}else{
+
+			var fechaInicial = año+"-"+mes+"-"+dia;
+	    	var fechaFinal = año+"-"+mes+"-"+dia;
+
+		}	
+
+    	localStorage.setItem("capturarRango", "Hoy"); //captura para recargar la pgina y veulva a actulizar
+
+    	window.location = "index.php?ruta=ventas&fechaInicial="+fechaInicial+"&fechaFinal="+fechaFinal; ///ruta con datos capturados
+
+	}
+
+})

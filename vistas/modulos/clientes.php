@@ -36,7 +36,7 @@
         
        <table class="table table-bordered table-striped dt-responsive tablas" width="100%">
          
-        <thead> <!-- Columnas para el cliente -->
+        <thead>
          
          <tr>
            
@@ -58,7 +58,7 @@
 
         <tbody>
 
-        <?php  //En un objeto clientes mostramos la lista de clientes
+        <?php
 
           $item = null;
           $valor = null;
@@ -94,11 +94,15 @@
 
                       <div class="btn-group">
                           
-                        <button class="btn btn-warning btnEditarCliente" data-toggle="modal" data-target="#modalEditarCliente" idCliente="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
+                        <button class="btn btn-warning btnEditarCliente" data-toggle="modal" data-target="#modalEditarCliente" idCliente="'.$value["id"].'"><i class="fa fa-pencil"></i></button>';
 
-                        <button class="btn btn-danger btnEliminarCliente" idCliente="'.$value["id"].'"><i class="fa fa-times"></i></button>
+                      if($_SESSION["perfil"] == "Administrador"){
 
-                      </div>  
+                          echo '<button class="btn btn-danger btnEliminarCliente" idCliente="'.$value["id"].'"><i class="fa fa-times"></i></button>';
+
+                      }
+
+                      echo '</div>  
 
                     </td>
 
@@ -254,9 +258,7 @@ MODAL AGREGAR CLIENTE
 
       </form>
 
-              <!-- Objeto que permite la accion de crear un cliente-->
-
-      <?php 
+      <?php
 
         $crearCliente = new ControladorClientes();
         $crearCliente -> ctrCrearCliente();
@@ -402,7 +404,6 @@ MODAL EDITAR CLIENTE
         </div>
 
       </form>
-<!-- Objeto que permite la accion de crear un cliente-->
 
       <?php
 
@@ -419,14 +420,9 @@ MODAL EDITAR CLIENTE
 
 </div>
 
-<!-- Objeto que permite la accion de crear un cliente-->
-
-
 <?php
 
   $eliminarCliente = new ControladorClientes();
   $eliminarCliente -> ctrEliminarCliente();
 
 ?>
-
-
