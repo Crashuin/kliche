@@ -10,7 +10,7 @@
 
   <div class="login-box-body">
 
-    <p class="login-box-msg">Ingresar al sistema</p>
+    <h2 class="login-box-msg" style="margin: 10px 0;">Inicio de sesión</h2>
 
     <form method="post">
 
