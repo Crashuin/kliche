@@ -4,7 +4,7 @@
   
   <div class="login-logo">
 
-    <img src="vistas/img/plantilla/blancofull.png" class="img-responsive" style="width: 450px; height: 180px;">
+    <img src="vistas/img/plantilla/blancofull.png" class="img-responsive" style="width: 450px; height: 150px;">
 
   </div>
 

@@ -1,0 +1,54 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100%;
+}
+.registro{   
+ 
+    width: 1000px;
+    background: #24303c;
+    padding: 30px;
+    margin: auto;
+    margin-top: 30px;
+    border-radius: 4px;
+    font-family: 'calibri';
+    color: white; 
+    box-shadow: 7px 13px 37px #000;
+
+}
+
+
+.dato{
+    width: 100%;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid #ff0000;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    color:rgb(238, 238, 238);
+    font-style: oblique;
+}
+
+
+#area{
+    color: purple;
+    font-size: 'times new roman';
+}
+.monitor{
+    color: blue;
+    font-size:'calibri';
+}
+
+.registro p:hover{ 
+    text-align: center;
+    color: white;
+    text-decoration: underline;
+   -webkit-text-fill-color:coral;
+
+}
