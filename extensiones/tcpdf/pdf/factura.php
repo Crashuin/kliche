@@ -83,10 +83,10 @@ $bloque1 = <<<EOF
 				<div style="font-size:8.5px; text-align:right; line-height:15px;">
 					
 					<br>
-					Teléfono: 300 786 52 49
+					Teléfono: 317 853 4165
 					
 					<br>
-					Ipiales - Nariño
+					Cra 3 No. 13 - 70 <br> Barrio Bella vista <br> Ipiales - Nariño
 
 				</div>
 				
